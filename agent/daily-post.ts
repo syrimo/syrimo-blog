@@ -66,7 +66,7 @@ Respond with ONLY the image prompt, nothing else.`
 
   try {
     // Gemini Flash with reference image
-    const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent', {
+    const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
