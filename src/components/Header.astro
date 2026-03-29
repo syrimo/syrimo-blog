@@ -1,0 +1,23 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-[var(--color-charcoal)]/80 border-b border-[var(--color-border)]">
+  <nav class="max-w-2xl mx-auto px-6 h-14 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="/" class="text-sm font-bold tracking-widest text-[var(--color-text-primary)] hover:text-[var(--color-accent)] transition-colors">
+      SYRIMO
+    </a>
+
+    <!-- Right side -->
+    <div class="flex items-center gap-4">
+      <a
+        href="/rss.xml"
+        class="text-xs font-medium text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors uppercase tracking-wide"
+      >
+        RSS
+      </a>
+      <ThemeToggle />
+    </div>
+  </nav>
+</header>

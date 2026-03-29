@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import PostCard from '../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+
+const categories = ['ai-tech', 'bisnes', 'isu-semasa', 'sains', 'islam', 'sejarah', 'minda'];
+
+const posts = (await getCollection('posts'))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="Syrimo — Builder. Thinker. Poet.">
+  <Header />
+
+  <main class="max-w-4xl mx-auto px-6">
+    <!-- Hero -->
+    <section class="py-16 text-center">
+      <h1 class="text-5xl font-bold tracking-tight">Syrimo</h1>
+      <p class="mt-4 text-xl text-gray-600 dark:text-gray-400">Builder. Thinker. Poet. Humble servant.</p>
+      <p class="mt-6 max-w-2xl mx-auto text-gray-700 dark:text-gray-300 leading-relaxed">
+        Exploring AI, science, history, business, and faith — through the lens of someone who builds things and thinks deeply about why.
+      </p>
+    </section>
+
+    <!-- Category Filter -->
+    <section class="flex flex-wrap gap-2 justify-center pb-12">
+      {categories.map((cat) => (
+        <a
+          href={`/category/${cat}`}
+          class="px-3 py-1 text-sm rounded-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+        >
+          {cat}
+        </a>
+      ))}
+    </section>
+
+    <!-- Posts -->
+    <section class="flex flex-col gap-8 pb-16">
+      {posts.map((post) => (
+        <PostCard post={post} />
+      ))}
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

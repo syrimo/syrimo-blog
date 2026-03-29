@@ -1,0 +1,42 @@
+---
+import CategoryBadge from './CategoryBadge.astro';
+
+interface Props {
+  post: {
+    id: string;
+    data: {
+      title: string;
+      date: Date;
+      category: string;
+      description: string;
+    };
+  };
+}
+
+const { post } = Astro.props;
+const { title, date, category, description } = post.data;
+const slug = post.id;
+const formattedDate = date.toLocaleDateString('ms-MY', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+
+<a
+  href={`/blog/${slug}`}
+  class="group block p-5 rounded-lg border border-[var(--color-border)] hover:border-[var(--color-accent-dim)] bg-[var(--color-surface)] transition-colors duration-200"
+>
+  <div class="flex items-center gap-3 mb-3">
+    <CategoryBadge category={category} />
+    <span class="text-xs text-[var(--color-text-muted)]">{formattedDate}</span>
+  </div>
+
+  <h3 class="text-lg font-semibold text-[var(--color-text-primary)] group-hover:text-[var(--color-accent)] transition-colors mb-2 leading-snug">
+    {title}
+  </h3>
+
+  <p class="text-sm text-[var(--color-text-secondary)] line-clamp-2 leading-relaxed">
+    {description}
+  </p>
+</a>

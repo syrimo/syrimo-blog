@@ -1,0 +1,26 @@
+---
+interface Props {
+  category: string;
+}
+
+const { category } = Astro.props;
+
+const categoryMap: Record<string, { label: string; color: string }> = {
+  'ai-tech': { label: 'AI & Tech', color: '#3b82f6' },
+  'bisnes': { label: 'Bisnes', color: '#10b981' },
+  'isu-semasa': { label: 'Isu Semasa', color: '#f97316' },
+  'sains': { label: 'Sains', color: '#8b5cf6' },
+  'islam': { label: 'Islam', color: '#14b8a6' },
+  'sejarah': { label: 'Sejarah', color: '#f59e0b' },
+  'minda': { label: 'Minda', color: '#f43f5e' },
+};
+
+const cat = categoryMap[category] ?? { label: category, color: '#6b7280' };
+---
+
+<span
+  class="inline-block text-xs font-medium px-2.5 py-0.5 rounded-full"
+  style={`background-color: ${cat.color}20; color: ${cat.color};`}
+>
+  {cat.label}
+</span>

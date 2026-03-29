@@ -1,0 +1,85 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CategoryBadge from '../components/CategoryBadge.astro';
+import TakeawayBox from '../components/TakeawayBox.astro';
+
+interface Props {
+  title: string;
+  category: string;
+  date: Date;
+  description: string;
+  takeaways?: string[];
+  tags?: string[];
+}
+
+const { title, category, date, description, takeaways, tags } = Astro.props;
+const formattedDate = new Date(date).toLocaleDateString('ms-MY', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout title={`${title} — SYRIMO`} description={description}>
+  <Header />
+
+  <main class="max-w-2xl mx-auto px-6 pt-28 pb-16">
+    <!-- Post header -->
+    <div class="mb-10">
+      <CategoryBadge category={category} />
+      <h1 class="text-3xl sm:text-4xl font-bold mt-4 mb-4 leading-tight font-[var(--font-serif)]">
+        {title}
+      </h1>
+      <div class="flex items-center gap-3 text-sm text-[var(--color-text-muted)]">
+        <span>{formattedDate}</span>
+        <span class="text-[var(--color-border)]">&middot;</span>
+        <span>Syah</span>
+      </div>
+    </div>
+
+    <!-- Post content -->
+    <article class="prose prose-invert max-w-none
+      prose-headings:font-[var(--font-serif)] prose-headings:text-[var(--color-text-primary)]
+      prose-p:text-[var(--color-text-secondary)] prose-p:leading-relaxed
+      prose-a:text-[var(--color-accent)] prose-a:no-underline hover:prose-a:underline
+      prose-strong:text-[var(--color-text-primary)]
+      prose-code:text-[var(--color-accent)] prose-code:font-[var(--font-mono)]
+      prose-blockquote:border-[var(--color-accent)] prose-blockquote:text-[var(--color-text-secondary)]
+      prose-li:text-[var(--color-text-secondary)]
+    ">
+      <slot />
+    </article>
+
+    <!-- Takeaways -->
+    {takeaways && takeaways.length > 0 && (
+      <div class="mt-12">
+        <TakeawayBox takeaways={takeaways} />
+      </div>
+    )}
+
+    <!-- Tags -->
+    {tags && tags.length > 0 && (
+      <div class="mt-10 flex flex-wrap gap-2">
+        {tags.map((tag: string) => (
+          <span class="text-xs px-3 py-1 rounded-full border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">
+            #{tag}
+          </span>
+        ))}
+      </div>
+    )}
+
+    <!-- Back link -->
+    <div class="mt-14 pt-8 border-t border-[var(--color-border)]">
+      <a
+        href="/"
+        class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors"
+      >
+        &larr; Kembali ke halaman utama
+      </a>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

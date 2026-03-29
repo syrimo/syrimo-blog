@@ -1,0 +1,21 @@
+---
+interface Props {
+  takeaways: string[];
+}
+
+const { takeaways } = Astro.props;
+---
+
+<div class="rounded-lg border-l-4 border-[var(--color-accent)] bg-[var(--color-surface)] p-6">
+  <h3 class="text-sm font-semibold uppercase tracking-wide text-[var(--color-accent)] mb-4">
+    Take Home Points
+  </h3>
+  <ol class="space-y-2">
+    {takeaways.map((point, i) => (
+      <li class="flex gap-3 text-sm text-[var(--color-text-secondary)] leading-relaxed">
+        <span class="flex-shrink-0 font-semibold text-[var(--color-text-muted)]">{i + 1}.</span>
+        <span>{point}</span>
+      </li>
+    ))}
+  </ol>
+</div>
