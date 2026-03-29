@@ -58,6 +58,53 @@ async function generateOgImage(title: string, category: string, slug: string): P
   }
 }
 
+interface FeedItem {
+  title: string;
+  link: string;
+  summary: string;
+}
+
+async function crawlFeeds(feeds: string[]): Promise<FeedItem[]> {
+  const items: FeedItem[] = [];
+
+  const results = await Promise.allSettled(
+    feeds.map(async (feedUrl) => {
+      try {
+        const res = await fetch(feedUrl, {
+          headers: { 'User-Agent': 'SyrimoBlog/1.0' },
+          signal: AbortSignal.timeout(10000),
+        });
+        if (!res.ok) return [];
+        const xml = await res.text();
+
+        // Simple XML parsing — extract items/entries
+        const entryPattern = /<(?:item|entry)[\s>]([\s\S]*?)<\/(?:item|entry)>/gi;
+        const parsed: FeedItem[] = [];
+        let match;
+        while ((match = entryPattern.exec(xml)) !== null && parsed.length < 5) {
+          const block = match[1];
+          const title = block.match(/<title[^>]*>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/s)?.[1]?.trim() || '';
+          const link = block.match(/<link[^>]*href="([^"]*)"/)?.[ 1]
+            || block.match(/<link[^>]*>(.*?)<\/link>/s)?.[1]?.trim() || '';
+          const summary = block.match(/<(?:description|summary|content)[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/(?:description|summary|content)>/)?.[1]?.trim() || '';
+          // Strip HTML tags from summary
+          const cleanSummary = summary.replace(/<[^>]*>/g, '').slice(0, 300);
+          if (title) parsed.push({ title, link, summary: cleanSummary });
+        }
+        return parsed;
+      } catch {
+        return [];
+      }
+    })
+  );
+
+  for (const result of results) {
+    if (result.status === 'fulfilled') items.push(...result.value);
+  }
+
+  return items;
+}
+
 async function main() {
   const startTime = Date.now();
   const today = new Date();
@@ -69,35 +116,46 @@ async function main() {
   const category = getTodayCategory();
   console.log(`Category: ${category.label} (${category.id})`);
 
-  // 2. Read system prompt
-  const systemPrompt = readFileSync(join(import.meta.dir, 'system-prompt.md'), 'utf-8');
+  // 2. Crawl RSS feeds for today's category
+  console.log(`Crawling ${category.feeds.length} feeds...`);
+  const feedItems = await crawlFeeds(category.feeds);
+  console.log(`Found ${feedItems.length} articles.`);
 
-  // 3. Initialize Claude
+  // 3. Read system prompt + init Claude
+  const systemPrompt = readFileSync(join(import.meta.dir, 'system-prompt.md'), 'utf-8');
   const apiKey = execSync('security find-generic-password -s anthropic-api-key -w 2>/dev/null || echo $ANTHROPIC_API_KEY', { encoding: 'utf-8' }).trim();
   const client = new Anthropic({ apiKey });
 
-  // 4. Step 1: Get topic suggestion
-  console.log('Finding topic...');
+  // 4. Feed digest — let Claude pick the best angle from real content
+  const feedDigest = feedItems.length > 0
+    ? feedItems.map((item, i) => `${i + 1}. "${item.title}"\n   ${item.summary}\n   Source: ${item.link}`).join('\n\n')
+    : 'No feed articles available today. Use your knowledge to suggest a compelling topic.';
+
+  console.log('Picking topic from feed...');
   const topicResponse = await client.messages.create({
     model: 'claude-sonnet-4-5-20250929',
     max_tokens: 500,
     messages: [{
       role: 'user',
-      content: `You are a research assistant. Suggest ONE compelling blog post topic for the category "${category.label}".
+      content: `You are a research assistant for a blog in the category "${category.label}".
 
-The topic should be:
-- Timely and relevant (something people are thinking about right now, or a timeless topic with a fresh angle)
-- Deep enough for 800-1200 words of critical analysis
-- Not a basic explainer — assume an intelligent reader
-- Connected to real-world impact
+Here are today's latest articles from curated sources:
 
-Search keywords for inspiration: ${category.searchKeywords.join(', ')}
+${feedDigest}
+
+Based on these articles, pick the ONE most compelling topic for a deep-dive blog post. You can:
+- Take one article's topic and give it a fresh, critical angle
+- Combine insights from multiple articles into a bigger narrative
+- Use an article as a jumping-off point for a deeper exploration
+
+The post should be deep enough for 800-1200 words of critical analysis. Not a summary — an original take.
 
 Respond with ONLY a JSON object:
 {
-  "title": "The blog post title",
+  "title": "Your original blog post title (not the source article's title)",
   "angle": "2-3 sentence description of the specific angle to take",
-  "keywords": ["keyword1", "keyword2", "keyword3"]
+  "keywords": ["keyword1", "keyword2", "keyword3"],
+  "sources": ["url1", "url2"]
 }`
     }],
   });
@@ -106,8 +164,12 @@ Respond with ONLY a JSON object:
   const topicJson = JSON.parse(topicText.replace(/```json\n?|\n?```/g, '').trim());
   console.log(`Topic: ${topicJson.title}`);
 
-  // 5. Step 2: Generate full blog post
+  // 5. Generate full blog post — informed by real sources
   console.log('Generating post...');
+  const sourcesContext = topicJson.sources?.length > 0
+    ? `\n\nReference these source articles for context (but write original content, do NOT summarize):\n${topicJson.sources.map((s: string) => `- ${s}`).join('\n')}`
+    : '';
+
   const postResponse = await client.messages.create({
     model: 'claude-sonnet-4-5-20250929',
     max_tokens: 4096,
@@ -118,13 +180,15 @@ Respond with ONLY a JSON object:
 
 Angle: ${topicJson.angle}
 Category: ${category.label}
-Keywords: ${topicJson.keywords.join(', ')}
+Keywords: ${topicJson.keywords.join(', ')}${sourcesContext}
 
 Write the FULL blog post in markdown format. Follow the structure defined in your system prompt exactly (Hook → Context → Deep Dive → So What → Take Home Points).
 
 Target: 800-1200 words.
 
-Do NOT include frontmatter — just the content starting from the first paragraph (the hook). Include "## Take Home Points" as the final section with bullet points.`
+Do NOT include frontmatter — just the content starting from the first paragraph (the hook). Include "## Take Home Points" as the final section with bullet points.
+
+At the very end, after Take Home Points, add a "---" divider and a small "Sources" section listing the reference articles used (title + URL). Keep it minimal.`
     }],
   });
 

@@ -1,44 +1,84 @@
 export interface Category {
   id: string;
   label: string;
-  searchKeywords: string[];
+  feeds: string[];
 }
 
 export const categories: Category[] = [
   {
     id: 'ai-tech',
-    label: 'AI & Teknologi',
-    searchKeywords: ['artificial intelligence breakthroughs 2026', 'AI agents autonomous systems', 'solo developer AI tools', 'future of software engineering AI', 'machine learning real world applications'],
+    label: 'AI & Tech',
+    feeds: [
+      'https://simonwillison.net/atom/everything/',
+      'https://www.technologyreview.com/feed/',
+      'https://techcrunch.com/category/artificial-intelligence/feed/',
+      'https://blog.google/technology/ai/rss/',
+      'https://www.wired.com/feed/tag/ai/latest/rss',
+    ],
   },
   {
     id: 'bisnes',
-    label: 'Bisnes & Strategi',
-    searchKeywords: ['solopreneur business strategy 2026', 'startup lessons learned', 'one person business scaling', 'bootstrapped company success', 'indie hacker revenue growth'],
+    label: 'Business & Strategy',
+    feeds: [
+      'https://hbr.org/feed',
+      'https://feeds.feedburner.com/TheBigPicture',
+      'https://seths.blog/feed/',
+      'https://www.startuparchive.org/feed.xml',
+      'https://www.indiehackers.com/feed.xml',
+    ],
   },
   {
     id: 'isu-semasa',
-    label: 'Isu Semasa',
-    searchKeywords: ['world news today analysis', 'geopolitics 2026', 'Malaysia current affairs', 'global economy trends', 'technology policy regulation'],
+    label: 'Current Affairs',
+    feeds: [
+      'https://rss.nytimes.com/services/xml/rss/nyt/World.xml',
+      'https://feeds.bbci.co.uk/news/world/rss.xml',
+      'https://www.aljazeera.com/xml/rss/all.xml',
+      'https://www.reuters.com/rssFeed/worldNews',
+      'https://www.theguardian.com/world/rss',
+    ],
   },
   {
     id: 'sains',
-    label: 'Sains & Discovery',
-    searchKeywords: ['science breakthrough discovery 2026', 'space exploration latest', 'physics new research', 'biology medical breakthrough', 'climate science technology'],
+    label: 'Science & Discovery',
+    feeds: [
+      'https://www.nature.com/nature.rss',
+      'https://www.sciencedaily.com/rss/all.xml',
+      'https://www.newscientist.com/feed/home/',
+      'https://phys.org/rss-feed/',
+      'https://arstechnica.com/science/feed/',
+    ],
   },
   {
     id: 'islam',
-    label: 'Islam & Tamadun',
-    searchKeywords: ['Islamic civilization contributions', 'Quran wisdom modern life', 'Prophet Muhammad leadership lessons', 'Islamic golden age science', 'Muslim scholars history'],
+    label: 'Islam & Civilisation',
+    feeds: [
+      'https://yaqeeninstitute.org/feed/',
+      'https://aboutislam.net/feed/',
+      'https://www.islamicity.org/feed/',
+      'https://muslimmatters.org/feed/',
+    ],
   },
   {
     id: 'sejarah',
-    label: 'Sejarah & Peradaban',
-    searchKeywords: ['history turning points civilization', 'empire rise and fall lessons', 'historical inventions changed world', 'ancient civilizations discoveries', 'world history analysis'],
+    label: 'History & Civilisation',
+    feeds: [
+      'https://www.smithsonianmag.com/rss/history/',
+      'https://www.historytoday.com/feed/rss.xml',
+      'https://www.ancient-origins.net/rss.xml',
+      'https://www.worldhistory.org/feed/',
+    ],
   },
   {
     id: 'minda',
-    label: 'Minda & Produktiviti',
-    searchKeywords: ['mental models thinking frameworks', 'psychology of success habits', 'productivity systems deep work', 'cognitive science decision making', 'self mastery discipline mindset'],
+    label: 'Mind & Productivity',
+    feeds: [
+      'https://jamesclear.com/feed',
+      'https://nesslabs.com/feed',
+      'https://fs.blog/feed/',
+      'https://markmanson.net/feed',
+      'https://zenhabits.net/feed/',
+    ],
   },
 ];
 
