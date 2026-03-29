@@ -9,49 +9,6 @@ const POSTS_DIR = join(PROJECT_ROOT, 'src', 'content', 'posts');
 const OG_DIR = join(PROJECT_ROOT, 'public', 'og');
 const LOG_DIR = join(import.meta.dir, 'logs');
 
-async function generateImagePrompt(
-  client: Anthropic,
-  title: string,
-  category: string,
-  postContent: string,
-): Promise<string> {
-  const res = await client.messages.create({
-    model: 'claude-sonnet-4-5-20250929',
-    max_tokens: 300,
-    messages: [{
-      role: 'user',
-      content: `You are a cinematic photography director. Generate a single image prompt for a blog post hero image.
-
-Blog title: "${title}"
-Category: ${category}
-First 500 chars of content: ${postContent.slice(0, 500)}
-
-Create a visually striking, cinematic scene that captures the ESSENCE of this article.
-
-FEATURE THIS CHARACTER in the scene: A Southeast Asian man (Malaysian, late 30s), wavy black hair swept back, thin-framed glasses, short goatee, wearing a dark navy blazer over a casual shirt. Confident, contemplative presence.
-
-Place him naturally in the scene — working, observing, thinking, walking, standing against a backdrop. He should feel like the protagonist of the story, not posing for a portrait.
-
-Think:
-- National Geographic meets Blade Runner
-- Dramatic lighting: golden hour, neon glow, deep shadows, fog, rain, dust particles
-- Cinematic depth of field, wide angle or medium shot
-- Real-world environments that symbolize the topic
-
-RULES:
-- NO text, letters, words, numbers, or writing in the image
-- ONE clear scene, not a collage
-- Photorealistic cinematic style
-- 16:9 widescreen composition
-- The man MUST appear in the image
-- Describe in 2-3 sentences max
-
-Respond with ONLY the image prompt, nothing else.`
-    }],
-  });
-  return res.content[0].type === 'text' ? res.content[0].text.trim() : '';
-}
-
 async function generateOgImage(
   client: Anthropic,
   title: string,
@@ -65,34 +22,86 @@ async function generateOgImage(
     return null;
   }
 
-  const prompt = await generateImagePrompt(client, title, category, postContent);
-  console.log(`Image prompt: ${prompt.slice(0, 100)}...`);
+  // Load Syah's reference photo
+  const refImagePath = join(import.meta.dir, 'syah-ref.png');
+  if (!existsSync(refImagePath)) {
+    console.log('Reference image not found, skipping.');
+    return null;
+  }
+  const refImageBase64 = readFileSync(refImagePath).toString('base64');
+
+  // Claude crafts the scene prompt
+  const promptRes = await client.messages.create({
+    model: 'claude-sonnet-4-5-20250929',
+    max_tokens: 300,
+    messages: [{
+      role: 'user',
+      content: `You are a cinematic photography director. Generate a single image prompt for a blog post hero image.
+
+Blog title: "${title}"
+Category: ${category}
+First 500 chars of content: ${postContent.slice(0, 500)}
+
+Create a visually striking, cinematic scene that captures the ESSENCE of this article. The subject (reference photo provided separately) should be placed naturally in the scene — working, observing, thinking, walking. He is the protagonist of the story.
+
+Think:
+- National Geographic meets Blade Runner
+- Dramatic lighting: golden hour, neon glow, deep shadows, fog, rain, dust particles
+- Cinematic depth of field, wide angle or medium shot
+- Real-world environments that symbolize the topic
+
+RULES:
+- NO text, letters, words, numbers, or writing in the image
+- ONE clear scene, not a collage
+- Photorealistic cinematic style
+- 16:9 widescreen composition
+- Refer to the person as "the subject" — do not describe their appearance
+- Describe in 2-3 sentences max
+
+Respond with ONLY the image prompt, nothing else.`
+    }],
+  });
+  const scenePrompt = promptRes.content[0].type === 'text' ? promptRes.content[0].text.trim() : '';
+  console.log(`Image prompt: ${scenePrompt.slice(0, 100)}...`);
 
   try {
-    const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict', {
+    // Gemini Flash with reference image
+    const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'x-goog-api-key': geminiKey,
       },
       body: JSON.stringify({
-        instances: [{ prompt }],
-        parameters: {
-          sampleCount: 1,
-          aspectRatio: '16:9',
+        contents: [{
+          parts: [
+            { text: `Generate a cinematic blog hero image based on this scene description. Use the provided photo as reference for the person who should appear in the scene. Keep their face and appearance consistent with the reference.\n\nScene: ${scenePrompt}` },
+            { inline_data: { mime_type: 'image/png', data: refImageBase64 } },
+          ],
+        }],
+        generationConfig: {
+          responseModalities: ['IMAGE'],
+          imageConfig: { imageSize: '2K' },
         },
       }),
     });
 
     if (!res.ok) {
       const err = await res.text();
-      console.error('Imagen API error:', err);
+      console.error('Gemini image gen error:', err);
       return null;
     }
 
     const data = await res.json();
-    const base64 = data.predictions[0].bytesBase64Encoded;
-    const buffer = Buffer.from(base64, 'base64');
+    const parts = data.candidates?.[0]?.content?.parts ?? [];
+    const imagePart = parts.find((p: any) => p.inline_data);
+
+    if (!imagePart) {
+      console.error('No image in Gemini response.');
+      return null;
+    }
+
+    const buffer = Buffer.from(imagePart.inline_data.data, 'base64');
 
     if (!existsSync(OG_DIR)) {
       execSync(`mkdir -p ${OG_DIR}`);
