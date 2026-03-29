@@ -66,7 +66,7 @@ Respond with ONLY the image prompt, nothing else.`
 
   try {
     // Gemini Flash with reference image
-    const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent', {
+    const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-image-preview:generateContent', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ Respond with ONLY the image prompt, nothing else.`
         }],
         generationConfig: {
           responseModalities: ['TEXT', 'IMAGE'],
-          imageConfig: { imageSize: '2K', personGeneration: 'allow_adult' },
+          imageConfig: { imageSize: '2K' },
         },
         safetySettings: [
           { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_ONLY_HIGH' },
