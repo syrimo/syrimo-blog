@@ -1,0 +1,86 @@
+---
+title: "The Agentic Grinding Problem: Why AI That Never Gives Up Might Be Worse Than AI That Fails Fast"
+category: "ai-tech"
+date: 2026-03-29
+description: "Explores the hidden costs and philosophical implications of 'agentic coding' that solves problems through brute-force iteration rather than elegant solutions. E"
+takeaways:
+  - "**Grinding works, but optimizes for the wrong thing** — passing tests isn't the same as building maintainable systems. When AI can iterate infinitely, we risk choosing \"works now\" over \"works forever.\""
+  - "**The environmental cost is real and growing** — every retry loop consumes energy. At scale, grinding-based development is trading human thinking time for data center electricity in ways we haven't fully priced."
+  - "**Technical debt compounds in grinding-generated code** — systems built through brute-force iteration lack intentional architecture. Six months later, nobody understands why it works—only that it does. This is how codebases become archaeological sites."
+  - "**Craftsmanship requires resistance to grinding** — the most valuable code is elegant, minimal, and insightful. Grinding doesn't optimize for any of these. Developers must actively choose to think deeply, even when the AI offers the path of least resistance."
+  - "**Know when to grind, when to think** — agentic AI is a powerful tool, not a replacement for architectural vision. The skill of the future isn't prompt engineering—it's knowing which problems deserve grinding and which demand human insight."
+  - "[Matt Webb on agentic coding](https://simonwillison.net/2026/Mar/28/matt-webb/#atom-everything)"
+  - "[Vibe coding with SwiftUI](https://simonwillison.net/2026/Mar/27/vibe-coding-swiftui/#atom-everything)"
+tags: ["agentic-ai", "ai-coding", "software-development", "ai-efficiency", "technical-debt"]
+draft: false
+---
+
+# The Agentic Grinding Problem: Why AI That Never Gives Up Might Be Worse Than AI That Fails Fast
+
+You know what humans are terrible at? Grinding. We get bored, we lose focus, we need sleep. We're brilliant at insight, pattern recognition, and creative leaps—but ask us to try the same approach 47 times with minor variations, and we'll quit by attempt number three. AI doesn't have this limitation. It will try, fail, retry, tweak, fail again, retry differently, burn through a billion tokens, and eventually—maybe—arrive at something that works. The question nobody's asking loudly enough: *is this a feature or a catastrophe?*
+
+Welcome to the age of agentic coding, where AI assistants don't just suggest solutions—they iterate until problems dissolve through sheer computational persistence. And while it feels like magic when it works, we might be trading craftsmanship for brute force, elegance for exhaustion, and sustainable progress for a grinding apocalypse.
+
+## Context
+
+The traditional software development workflow looked like this: understand the problem, design a solution, write code, test, debug, ship. Each step required human judgment. Each failure point was an opportunity to *think differently*, to step back and ask: "Am I solving the right problem?"
+
+Agentic AI flips this script. Tools like Cursor, Copilot Workspace, and various autonomous coding agents operate on a fundamentally different principle: keep trying until something works. They'll generate code, run tests, see failures, modify approaches, regenerate, retest—in loops that can span hundreds or thousands of iterations. Simon Willison's observations on "vibe coding" capture this shift perfectly: developers describing desired outcomes in natural language, watching AI grind through implementation attempts, then tweaking vibes until the output feels right.
+
+Matt Webb's commentary adds another layer: these systems don't just retry—they *explore solution spaces* through massive parallelization and token expenditure that would bankrupt a human's patience in minutes. When you can afford to try every possible permutation, why bother with first-principles thinking?
+
+Here's the uncomfortable truth: it works. Not always elegantly, not always efficiently, but it *works*. And that's precisely the problem.
+
+## The Hidden Costs of Infinite Patience
+
+Let's talk about what we're actually optimizing for. Traditional software development, constrained by human limitations, evolved toward *economy of thought*. Good code wasn't just functional—it was minimal, readable, maintainable. Why? Because every line represented human cognitive load. We couldn't afford waste.
+
+Agentic systems remove that constraint. When your coding assistant can try 50 approaches in the time it takes you to think through one, the incentive structure changes. Why spend 30 minutes architecting an elegant solution when the AI can grind out something workable in 5 minutes and 200,000 tokens?
+
+The environmental math here is brutal. Each AI iteration consumes energy. Training runs consume more. The infrastructure to support billions of retry loops? Even more. We're essentially trading human thinking time—which costs calories and coffee—for data center electricity. At scale, this isn't trivial. We're building a development paradigm that treats computational resources as infinite when they're demonstrably not.
+
+But the environmental cost is only the surface. Deeper lies the **technical debt black hole**.
+
+Code generated through grinding doesn't carry the same *intentionality* as human-architected systems. It works, but does the developer understand *why*? When you iterate through 100 variations to find one that passes tests, you've optimized for *working* rather than *comprehension*. The resulting codebase becomes archaeological—layers of attempted solutions, partial fixes, and emergent patterns that nobody fully grasps.
+
+Six months later, when that code needs modification, you're facing a choice: understand the grinding-generated complexity, or let the AI grind again. Most will choose the latter. And so the cycle perpetuates, each iteration adding opacity, until your entire stack is a house of cards built by tireless machines that nobody can fully explain.
+
+## The Craftsmanship Question
+
+There's something almost spiritual that happens when a programmer solves a hard problem elegantly. That moment when complexity collapses into simplicity—when you see the *right* abstraction, the *clean* interface, the *minimal* solution that does exactly what's needed and nothing more. That's not just engineering. That's *art*.
+
+Grinding optimizes that away. Why? Because grinding is fundamentally *non-teleological*. It doesn't aim for beauty or insight—it aims for "tests pass." The AI doesn't care if your solution is elegant or kludgy, inspired or derivative, maintainable or brittle. It cares about the success condition you defined, and it will find the *first viable path*, not the *best path*.
+
+This matters because software isn't just about today's feature. It's about the foundation you're building for tomorrow's impossibilities. The most valuable code isn't the code that works—it's the code that works *and* makes the next impossible thing possible. That requires *vision*, which requires *understanding*, which requires the kind of deep thinking that grinding actively discourages.
+
+We're at risk of breeding a generation of developers who are brilliant prompt engineers and mediocre architects. Who can describe what they want but not design how it should work. Who can recognize working code but not explain why it works. Who can ship features but can't build systems.
+
+## What This Means for Real Builders
+
+If you're building real products—not demos, not proof-of-concepts, but things people depend on—this grinding paradigm should terrify you. Not because agentic AI is useless (it's not), but because it's powerful enough to *let you get away with not thinking*.
+
+The trap is seductive: fast iteration, rapid shipping, feature velocity that would've been impossible five years ago. But velocity without direction is just speed. And speed without understanding is just motion.
+
+The companies that will win in the next decade won't be the ones that grind fastest—they'll be the ones that know *when* to grind and when to *think*. When to let AI explore solution spaces, and when to step back and ask: "Are we solving the right problem? Is there a simpler frame?"
+
+Because here's what grinding can't do: it can't tell you that the feature you're building shouldn't exist. It can't recognize that the complexity you're managing is symptoms of a broken architecture. It can't suggest that maybe, just maybe, the reason this is so hard is because you're asking the wrong question.
+
+That still requires human wisdom. And wisdom doesn't come from outsourcing thinking—it comes from doing the thinking that *can't* be outsourced.
+
+## Take Home Points
+
+- **Grinding works, but optimizes for the wrong thing** — passing tests isn't the same as building maintainable systems. When AI can iterate infinitely, we risk choosing "works now" over "works forever."
+
+- **The environmental cost is real and growing** — every retry loop consumes energy. At scale, grinding-based development is trading human thinking time for data center electricity in ways we haven't fully priced.
+
+- **Technical debt compounds in grinding-generated code** — systems built through brute-force iteration lack intentional architecture. Six months later, nobody understands why it works—only that it does. This is how codebases become archaeological sites.
+
+- **Craftsmanship requires resistance to grinding** — the most valuable code is elegant, minimal, and insightful. Grinding doesn't optimize for any of these. Developers must actively choose to think deeply, even when the AI offers the path of least resistance.
+
+- **Know when to grind, when to think** — agentic AI is a powerful tool, not a replacement for architectural vision. The skill of the future isn't prompt engineering—it's knowing which problems deserve grinding and which demand human insight.
+
+---
+
+**Sources:**
+- [Matt Webb on agentic coding](https://simonwillison.net/2026/Mar/28/matt-webb/#atom-everything)
+- [Vibe coding with SwiftUI](https://simonwillison.net/2026/Mar/27/vibe-coding-swiftui/#atom-everything)
