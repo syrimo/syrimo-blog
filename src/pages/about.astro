@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout title="About — SYRIMO" description="Syah builds technology that makes lives better — for education, community, and the preservation of knowledge.">
+  <Header />
+
+  <main class="max-w-2xl mx-auto px-6 pt-28 pb-16">
+    <div class="mb-12">
+      <img
+        src="/og/default.png"
+        alt="Syah"
+        class="w-full rounded-xl mb-10"
+        loading="eager"
+      />
+
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight leading-tight mb-6">
+        I build things and write about why.
+      </h1>
+
+      <div class="prose max-w-none">
+        <p>
+          I'm Syah — founder of <a href="https://suterahijau.com" target="_blank" rel="noopener noreferrer">Sutera Hijau Academy</a>, a technology studio based in Cyberjaya, Malaysia. Since 2017, I've been building products for education, community finance, and Islamic content — quietly, intentionally, and with real users in mind.
+        </p>
+
+        <p>
+          I created <strong>Nurflix</strong> to bring the stories of the Prophets and Companions to a new generation — reaching 40,000 viewers and 50,000 followers. Then <strong>Nurcast</strong>, exploring the Quran through podcast. The costs were real, but the lessons were worth more. Now I'm rebuilding smarter, powered by AI.
+        </p>
+
+        <p>
+          Today I run <strong>ORCA</strong> — an AI operations layer that builds, deploys, and operates software systems. With it, I've shipped products across education, fintech, and content delivery. One person. Real impact.
+        </p>
+
+        <h2>What this blog is about</h2>
+
+        <p>
+          Every day, an AI agent crawls curated sources across seven categories — technology, business, current affairs, science, Islamic civilisation, history, and the human mind. It finds what matters, and I write about it with depth, critical thinking, and a perspective shaped by building real things.
+        </p>
+
+        <p>
+          This isn't a neutral space. I believe technology should serve people, not extract from them. I believe clarity of purpose beats scale. And I believe the generation described in Surah Al-Fath — committed, principled, unshakeable — is the model worth following.
+        </p>
+
+        <h2>Connect</h2>
+
+        <ul>
+          <li><a href="https://x.com/syrimo" target="_blank" rel="noopener noreferrer">X / Twitter</a></li>
+          <li><a href="https://github.com/syrimo" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+          <li><a href="mailto:syah@suterahijau.com">syah@suterahijau.com</a></li>
+          <li><a href="/rss.xml">RSS Feed</a></li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
