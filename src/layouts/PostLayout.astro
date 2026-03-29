@@ -60,12 +60,7 @@ const formattedDate = new Date(date).toLocaleDateString('ms-MY', {
       <slot />
     </article>
 
-    <!-- Takeaways -->
-    {takeaways && takeaways.length > 0 && (
-      <div class="mt-12">
-        <TakeawayBox takeaways={takeaways} />
-      </div>
-    )}
+    <!-- Takeaways rendered inline within post content -->
 
     <!-- Tags -->
     {tags && tags.length > 0 && (
