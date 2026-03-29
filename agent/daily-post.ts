@@ -9,17 +9,61 @@ const POSTS_DIR = join(PROJECT_ROOT, 'src', 'content', 'posts');
 const OG_DIR = join(PROJECT_ROOT, 'public', 'og');
 const LOG_DIR = join(import.meta.dir, 'logs');
 
-async function generateOgImage(title: string, category: string, slug: string): Promise<string | null> {
+async function generateImagePrompt(
+  client: Anthropic,
+  title: string,
+  category: string,
+  postContent: string,
+): Promise<string> {
+  const res = await client.messages.create({
+    model: 'claude-sonnet-4-5-20250929',
+    max_tokens: 300,
+    messages: [{
+      role: 'user',
+      content: `You are a cinematic photography director. Generate a single image prompt for a blog post hero image.
+
+Blog title: "${title}"
+Category: ${category}
+First 500 chars of content: ${postContent.slice(0, 500)}
+
+Create a visually striking, cinematic scene that captures the ESSENCE of this article. Think:
+- National Geographic meets Blade Runner
+- Real-world scenes with dramatic lighting
+- Golden hour, neon glow, deep shadows, fog, rain, dust particles
+- Human elements welcome (silhouettes, hands, crowds from behind)
+- Objects, landscapes, architecture that symbolize the topic
+
+RULES:
+- NO text, letters, words, numbers, or writing in the image
+- ONE clear scene, not a collage
+- Photorealistic cinematic style
+- 16:9 widescreen composition
+- Describe in 2-3 sentences max
+
+Respond with ONLY the image prompt, nothing else.`
+    }],
+  });
+  return res.content[0].type === 'text' ? res.content[0].text.trim() : '';
+}
+
+async function generateOgImage(
+  client: Anthropic,
+  title: string,
+  category: string,
+  slug: string,
+  postContent: string,
+): Promise<string | null> {
   const geminiKey = execSync('security find-generic-password -s gemini-api-key -w 2>/dev/null', { encoding: 'utf-8' }).trim();
   if (!geminiKey) {
     console.log('Gemini: No API key found, skipping image gen.');
     return null;
   }
 
-  const prompt = `Abstract editorial illustration. Category: ${category}. Dark moody background with subtle geometric shapes, light gradients, and organic forms. Minimal, clean, high contrast. Photography-meets-digital-art aesthetic. ABSOLUTELY NO TEXT, NO LETTERS, NO WORDS, NO NUMBERS, NO WRITING, NO TYPOGRAPHY anywhere in the image. Pure visual only.`;
+  const prompt = await generateImagePrompt(client, title, category, postContent);
+  console.log(`Image prompt: ${prompt.slice(0, 100)}...`);
 
   try {
-    const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-fast-generate-001:predict', {
+    const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -200,10 +244,10 @@ At the very end, after Take Home Points, add a "---" divider and a small "Source
     ? takeawayMatch[1].split('\n').filter(l => l.startsWith('- ')).map(l => l.replace(/^- /, '').trim())
     : [];
 
-  // 7. Generate OG image
+  // 7. Generate OG image (cinematic, topic-aware)
   const slug = slugify(topicJson.title);
   console.log('Generating OG image...');
-  const imagePath = await generateOgImage(topicJson.title, category.label, `${dateStr}-${slug}`);
+  const imagePath = await generateOgImage(client, topicJson.title, category.label, `${dateStr}-${slug}`, postContent);
 
   // 8. Build frontmatter
   const description = topicJson.angle.slice(0, 160);

@@ -1,0 +1,102 @@
+---
+title: "The Agentic Coding Paradox: Why Infinite Compute Might Make Software Worse"
+category: "ai-tech"
+date: 2026-03-29
+description: "Explores the troubling implications of Matt Webb's observation that AI agents can 'grind problems into dust' with infinite retries. Argues that removing the con"
+image: "/og/2026-03-29-the-agentic-coding-paradox-why-infinite-compute-might-make-software-worse.png"
+takeaways:
+  - "**Infinite retries don't just change how we code — they change what we're willing to accept as good architecture.** When effort is free, waste becomes invisible."
+  - "**\"Computationally expensive but intellectually cheap\" software is the new technical debt.** Systems that only work because AI agents constantly patch them are houses of cards waiting for the compute to run out."
+  - "**The constraint of human effort was pedagogical, not just practical.** Removing it doesn't just make coding easier — it removes the pressure that forces developers to learn deeply."
+  - "**Understanding the system isn't optional for long-term success.** AI can maintain code it generated, but only human wisdom can redesign systems that have grown beyond their original purpose."
+  - "**Choose to be the developer who thinks architecturally, not just prompts effectively.** The market will reward both in the short term, but only one builds lasting value and unreplicable skill."
+  - "Simon Willison - \"Matt Webb on AI agents that can endlessly retry\" - https://simonwillison.net/2026/Mar/28/matt-webb/#atom-everything"
+  - "Simon Willison - \"Vibe coding SwiftUI with Claude Sonnet 4\" - https://simonwillison.net/2026/Mar/27/vibe-coding-swiftui/#atom-everything"
+tags: ["agentic-coding", "ai-development", "computational-efficiency", "software-architecture", "llm-limitations"]
+draft: false
+---
+
+# The Agentic Coding Paradox: Why Infinite Compute Might Make Software Worse
+
+There's something unsettling happening in software development right now, and most people are celebrating it as progress.
+
+We're building systems that can retry a problem ten thousand times until something works. AI agents that grind code into submission through sheer computational brute force. The constraint that shaped fifty years of elegant engineering — human time, human effort, human patience — is evaporating. And we think this is pure win. But what if removing constraints doesn't just change *how* we build software? What if it changes *what kind* of software becomes possible, and worse, acceptable?
+
+Matt Webb dropped a casual observation that should make every serious developer pause: with agentic coding, you can just keep retrying until you get what you want. The computer doesn't get tired. The LLM doesn't get frustrated. It just grinds problems into dust. Sounds powerful, right? But there's a shadow side to infinite patience that we're not talking about.
+
+## When Constraints Were Our Teachers
+
+For decades, the cost of software development was measured in programmer-hours. A junior developer couldn't burn three days brute-forcing a solution — someone would notice, someone would intervene, someone would teach them a better way. The constraint was pedagogical. It *forced* us to think.
+
+When you only have eight hours in a workday, you learn patterns. You study algorithms. You understand why O(n²) is different from O(n log n) not as academic trivia, but as survival knowledge. You learn to architect systems that are maintainable because you know *you'll* be the one maintaining them at 2 AM when everything breaks.
+
+These constraints produced a culture of craftsmanship. Not because developers were morally superior, but because waste was visible and expensive. You couldn't hide bad architecture behind infinite retries. You couldn't patch over poor understanding with computational abundance.
+
+Now? Simon Willison describes "vibe coding" — writing SwiftUI apps by feel, letting the AI agent iterate until the preview looks right. No deep understanding of the framework. No mental model of the view hierarchy. Just... vibes. And infinite retries.
+
+## The Brute Force Seduction
+
+Here's what happens when you remove effort as a constraint: you optimize for what's easy to specify, not what's good to build.
+
+Imagine you're building a feature. The elegant solution requires understanding your existing architecture, refactoring two components, and writing 200 lines of thoughtful code. The brute force solution? Bolt on a new microservice, duplicate some logic, add another dependency, ship it. In the old world, the brute force solution costs more programmer time, so you think twice. In the agentic coding world? The AI doesn't care. It'll generate ten microservices if that's what makes the test pass.
+
+We're creating a new category of software: computationally expensive but intellectually cheap. Code that only works because we can throw unlimited tokens at maintenance. Systems that are held together not by good design, but by AI agents constantly patching, retrying, compensating.
+
+Think about what this does to the learning curve. A junior developer using Cursor or Copilot can ship features without ever understanding the codebase. They describe what they want, the AI grinds through possibilities, something works, they commit. No pressure to learn the domain. No incentive to understand the patterns. The constraint that forced growth — the pain of not knowing — is removed.
+
+But here's the darker implication: we're not just changing individual learning paths. We're changing what kind of systems become economically viable.
+
+Consider a poorly designed database schema. In the traditional world, you fix it. The migration is painful, but the long-term cost of bad schema is higher than the short-term cost of fixing it. But with agentic coding? Just write more compensating logic. Let the AI generate increasingly complex queries that work around the schema issues. The immediate cost is near-zero. The long-term cost? We're about to find out.
+
+## The Architecture Nobody Understands
+
+There's a concept in Islamic thought that's relevant here: *hikmah*, wisdom. It's not just knowledge — it's knowing when, how, and why to apply knowledge. It's the difference between reciting facts and understanding principles.
+
+What we're building with infinite-retry agentic systems is software without hikmah. All tactics, no strategy. Code that works in the moment but carries no wisdom forward.
+
+I've shipped real products — Nurflix scaled to 40,000 viewers, OrcaSMS handles actual business SMS traffic. You know what every successful system has in common? Somebody understood it. Deeply. Not every line of code, but the architecture, the decisions, the tradeoffs. There was a human mind that could hold the system's shape.
+
+With agentic coding at scale, we're building systems where that understanding is optional. The AI can maintain it. The AI can extend it. But ask a human "why is it designed this way?" and you get shrugs. It works, don't touch it, let the AI handle the next feature.
+
+This is terrifying not because AI is bad at code. It's terrifying because we're outsourcing the architectural thinking — the exact layer where wisdom lives.
+
+## The Real Cost Is Invisible
+
+The Surah Al-Fath generation — those loyal to the Prophet ﷺ — were taught to count costs carefully. Not just immediate costs, but generational costs. What are we teaching the next generation of developers? What are we normalizing?
+
+We're normalizing solutions that work without understanding. We're normalizing architectures that exist because they emerged from stochastic processes, not because a human designed them with intent. We're normalizing codebases that are maintained by AI because no human *can* maintain them anymore.
+
+And because the compute cost is hidden, abstracted, someone else's problem, we don't feel the waste. That database schema that forces 10x more complex queries? In the old world, you'd see it in your server bills and developer frustration. In the new world? The AI just writes more complex queries. The LLM tokens are cheap. The problem is invisible until suddenly it's not — until the entire system is so convoluted that even the AI can't untangle it.
+
+This is what happens when we confuse "works" with "good." When we optimize for immediate function over long-term health. When we let abundance hide the costs of poor thinking.
+
+## So What?
+
+If you're a developer, you're facing a choice right now that will define your career. You can lean into the brute force paradigm — become someone who prompts AI agents effectively, who ships features fast, who lets the machine handle the complexity. Or you can double down on understanding, on architecture, on the kind of thinking that AI can't do.
+
+The market will reward both paths in the short term. But only one builds something lasting. Only one creates the kind of developer who can look at a system and know what's wrong, who can design solutions that are elegant not just functional, who carries wisdom forward.
+
+For the industry, we need to start asking hard questions: What are we willing to accept as "good enough" when effort is free? How do we preserve architectural thinking when brute force is always an option? What safeguards prevent us from building digital houses of cards that collapse the moment AI isn't available to hold them up?
+
+The generation we're building — whether code or people — will be shaped by how we answer these questions. We can build systems and developers who understand deeply, or we can build systems that only work because we can throw infinite compute at keeping them alive.
+
+Choose carefully. The constraint of effort wasn't just a limitation. It was a teacher. And we're about to find out what happens to a generation that never had to struggle to learn.
+
+## Take Home Points
+
+- **Infinite retries don't just change how we code — they change what we're willing to accept as good architecture.** When effort is free, waste becomes invisible.
+
+- **"Computationally expensive but intellectually cheap" software is the new technical debt.** Systems that only work because AI agents constantly patch them are houses of cards waiting for the compute to run out.
+
+- **The constraint of human effort was pedagogical, not just practical.** Removing it doesn't just make coding easier — it removes the pressure that forces developers to learn deeply.
+
+- **Understanding the system isn't optional for long-term success.** AI can maintain code it generated, but only human wisdom can redesign systems that have grown beyond their original purpose.
+
+- **Choose to be the developer who thinks architecturally, not just prompts effectively.** The market will reward both in the short term, but only one builds lasting value and unreplicable skill.
+
+---
+
+**Sources**
+
+- Simon Willison - "Matt Webb on AI agents that can endlessly retry" - https://simonwillison.net/2026/Mar/28/matt-webb/#atom-everything
+- Simon Willison - "Vibe coding SwiftUI with Claude Sonnet 4" - https://simonwillison.net/2026/Mar/27/vibe-coding-swiftui/#atom-everything
