@@ -75,10 +75,11 @@ Respond with ONLY the image prompt, nothing else.`
       body: JSON.stringify({
         model: 'seedream-4-0-250828',
         prompt: `${scenePrompt} Photorealistic, cinematic lighting, 16:9 widescreen.`,
-        image_urls: [`data:image/png;base64,${refImageBase64}`],
-        size: '2048x1024',
+        image: `data:image/png;base64,${refImageBase64}`,
+        size: '2K',
         response_format: 'b64_json',
         n: 1,
+        watermark: false,
       }),
     });
 
