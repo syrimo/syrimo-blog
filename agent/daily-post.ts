@@ -26,18 +26,24 @@ Blog title: "${title}"
 Category: ${category}
 First 500 chars of content: ${postContent.slice(0, 500)}
 
-Create a visually striking, cinematic scene that captures the ESSENCE of this article. Think:
+Create a visually striking, cinematic scene that captures the ESSENCE of this article.
+
+FEATURE THIS CHARACTER in the scene: A Southeast Asian man (Malaysian, late 30s), wavy black hair swept back, thin-framed glasses, short goatee, wearing a dark navy blazer over a casual shirt. Confident, contemplative presence.
+
+Place him naturally in the scene — working, observing, thinking, walking, standing against a backdrop. He should feel like the protagonist of the story, not posing for a portrait.
+
+Think:
 - National Geographic meets Blade Runner
-- Real-world scenes with dramatic lighting
-- Golden hour, neon glow, deep shadows, fog, rain, dust particles
-- Human elements welcome (silhouettes, hands, crowds from behind)
-- Objects, landscapes, architecture that symbolize the topic
+- Dramatic lighting: golden hour, neon glow, deep shadows, fog, rain, dust particles
+- Cinematic depth of field, wide angle or medium shot
+- Real-world environments that symbolize the topic
 
 RULES:
 - NO text, letters, words, numbers, or writing in the image
 - ONE clear scene, not a collage
 - Photorealistic cinematic style
 - 16:9 widescreen composition
+- The man MUST appear in the image
 - Describe in 2-3 sentences max
 
 Respond with ONLY the image prompt, nothing else.`
