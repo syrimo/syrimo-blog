@@ -80,7 +80,7 @@ Respond with ONLY the image prompt, nothing else.`
           ],
         }],
         generationConfig: {
-          responseModalities: ['IMAGE'],
+          responseModalities: ['TEXT', 'IMAGE'],
           imageConfig: { imageSize: '2K' },
         },
       }),
@@ -97,7 +97,9 @@ Respond with ONLY the image prompt, nothing else.`
     const imagePart = parts.find((p: any) => p.inline_data);
 
     if (!imagePart) {
-      console.error('No image in Gemini response.');
+      // Log what we got back for debugging
+      const textParts = parts.filter((p: any) => p.text).map((p: any) => p.text);
+      console.error('No image in Gemini response. Text:', textParts.join(' ').slice(0, 200));
       return null;
     }
 
