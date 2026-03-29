@@ -16,9 +16,9 @@ async function generateOgImage(
   slug: string,
   postContent: string,
 ): Promise<string | null> {
-  const geminiKey = execSync('security find-generic-password -s gemini-api-key -w 2>/dev/null', { encoding: 'utf-8' }).trim();
-  if (!geminiKey) {
-    console.log('Gemini: No API key found, skipping image gen.');
+  const arkKey = execSync('security find-generic-password -s byteplus-ark-api-key -w 2>/dev/null', { encoding: 'utf-8' }).trim();
+  if (!arkKey) {
+    console.log('BytePlus: No API key found, skipping image gen.');
     return null;
   }
 
@@ -42,7 +42,7 @@ Blog title: "${title}"
 Category: ${category}
 First 500 chars of content: ${postContent.slice(0, 500)}
 
-Create a visually striking, cinematic scene that captures the ESSENCE of this article. The subject (reference photo provided separately) should be placed naturally in the scene — working, observing, thinking, walking. He is the protagonist of the story.
+A reference photo of the subject is provided. Create a cinematic scene where the subject is placed naturally — working, observing, thinking, walking. He is the protagonist.
 
 Think:
 - National Geographic meets Blade Runner
@@ -51,12 +51,12 @@ Think:
 - Real-world environments that symbolize the topic
 
 RULES:
-- NO text, letters, words, numbers, or writing in the image
+- NO text, letters, words, numbers in the image
 - ONE clear scene, not a collage
 - Photorealistic cinematic style
-- 16:9 widescreen composition
-- Refer to the person as "the subject" — do not describe their appearance
-- Describe in 2-3 sentences max
+- Do NOT describe the subject's appearance — the reference image handles that
+- Just describe the SCENE, LIGHTING, COMPOSITION, and what the subject is DOING
+- 2-3 sentences max
 
 Respond with ONLY the image prompt, nothing else.`
     }],
@@ -65,50 +65,38 @@ Respond with ONLY the image prompt, nothing else.`
   console.log(`Image prompt: ${scenePrompt.slice(0, 100)}...`);
 
   try {
-    // Gemini Flash with reference image
-    const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-image-preview:generateContent', {
+    // Seedream 4.0 with reference image
+    const res = await fetch('https://ark.ap-southeast.bytepluses.com/api/v3/images/generations', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-goog-api-key': geminiKey,
+        'Authorization': `Bearer ${arkKey}`,
       },
       body: JSON.stringify({
-        contents: [{
-          parts: [
-            { text: `Edit this photo into a cinematic scene. Place the person from this photo into the following setting while keeping their appearance exactly the same.\n\nScene: ${scenePrompt}\n\nIMPORTANT: Keep the person's face, glasses, hair, and clothing exactly as shown in the photo. Change only the background and lighting to match the scene description. Widescreen 16:9 format. No text or words in the image.` },
-            { inline_data: { mime_type: 'image/png', data: refImageBase64 } },
-          ],
-        }],
-        generationConfig: {
-          responseModalities: ['TEXT', 'IMAGE'],
-          imageConfig: { imageSize: '2K' },
-        },
-        safetySettings: [
-          { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_ONLY_HIGH' },
-          { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_ONLY_HIGH' },
-          { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_ONLY_HIGH' },
-        ],
+        model: 'seedream-4-0-250828',
+        prompt: `Reference image: use strictly for facial structure, likeness, glasses, and hair. Place the subject into a cinematic scene. ${scenePrompt} Photorealistic, cinematic lighting, 16:9 widescreen. No text, no words, no letters in the image.`,
+        image_urls: [`data:image/png;base64,${refImageBase64}`],
+        size: '2048x1024',
+        response_format: 'b64_json',
+        n: 1,
       }),
     });
 
     if (!res.ok) {
       const err = await res.text();
-      console.error('Gemini image gen error:', err);
+      console.error('Seedream API error:', err);
       return null;
     }
 
     const data = await res.json();
-    const parts = data.candidates?.[0]?.content?.parts ?? [];
-    const imagePart = parts.find((p: any) => p.inline_data);
+    const imageData = data.data?.[0]?.b64_json;
 
-    if (!imagePart) {
-      // Log what we got back for debugging
-      const textParts = parts.filter((p: any) => p.text).map((p: any) => p.text);
-      console.error('No image in Gemini response. Text:', textParts.join(' ').slice(0, 200));
+    if (!imageData) {
+      console.error('No image in Seedream response:', JSON.stringify(data).slice(0, 300));
       return null;
     }
 
-    const buffer = Buffer.from(imagePart.inline_data.data, 'base64');
+    const buffer = Buffer.from(imageData, 'base64');
 
     if (!existsSync(OG_DIR)) {
       execSync(`mkdir -p ${OG_DIR}`);
