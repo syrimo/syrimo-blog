@@ -16,7 +16,7 @@ async function generateOgImage(title: string, category: string, slug: string): P
     return null;
   }
 
-  const prompt = `Create a minimal, elegant blog header image for an article titled "${title}". Category: ${category}. Style: dark background, subtle abstract geometric shapes or gradients, modern and clean. No text in the image. Moody, editorial feel. High contrast.`;
+  const prompt = `Abstract editorial illustration. Category: ${category}. Dark moody background with subtle geometric shapes, light gradients, and organic forms. Minimal, clean, high contrast. Photography-meets-digital-art aesthetic. ABSOLUTELY NO TEXT, NO LETTERS, NO WORDS, NO NUMBERS, NO WRITING, NO TYPOGRAPHY anywhere in the image. Pure visual only.`;
 
   try {
     const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-fast-generate-001:predict', {
