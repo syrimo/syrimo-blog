@@ -7,12 +7,12 @@ const { category } = Astro.props;
 
 const categoryMap: Record<string, { label: string; color: string }> = {
   'ai-tech': { label: 'AI & Tech', color: '#3b82f6' },
-  'bisnes': { label: 'Bisnes', color: '#10b981' },
-  'isu-semasa': { label: 'Isu Semasa', color: '#f97316' },
-  'sains': { label: 'Sains', color: '#8b5cf6' },
+  'bisnes': { label: 'Business', color: '#10b981' },
+  'isu-semasa': { label: 'Current Affairs', color: '#f97316' },
+  'sains': { label: 'Science', color: '#8b5cf6' },
   'islam': { label: 'Islam', color: '#14b8a6' },
-  'sejarah': { label: 'Sejarah', color: '#f59e0b' },
-  'minda': { label: 'Minda', color: '#f43f5e' },
+  'sejarah': { label: 'History', color: '#f59e0b' },
+  'minda': { label: 'Mind', color: '#f43f5e' },
 };
 
 const cat = categoryMap[category] ?? { label: category, color: '#6b7280' };
