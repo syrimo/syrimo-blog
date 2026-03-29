@@ -6,7 +6,57 @@ import { join } from 'path';
 
 const PROJECT_ROOT = join(import.meta.dir, '..');
 const POSTS_DIR = join(PROJECT_ROOT, 'src', 'content', 'posts');
+const OG_DIR = join(PROJECT_ROOT, 'public', 'og');
 const LOG_DIR = join(import.meta.dir, 'logs');
+
+async function generateOgImage(title: string, category: string, slug: string): Promise<string | null> {
+  const geminiKey = execSync('security find-generic-password -s gemini-api-key -w 2>/dev/null', { encoding: 'utf-8' }).trim();
+  if (!geminiKey) {
+    console.log('Gemini: No API key found, skipping image gen.');
+    return null;
+  }
+
+  const prompt = `Create a minimal, elegant blog header image for an article titled "${title}". Category: ${category}. Style: dark background, subtle abstract geometric shapes or gradients, modern and clean. No text in the image. Moody, editorial feel. High contrast.`;
+
+  try {
+    const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-fast-generate-001:predict', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': geminiKey,
+      },
+      body: JSON.stringify({
+        instances: [{ prompt }],
+        parameters: {
+          sampleCount: 1,
+          aspectRatio: '16:9',
+        },
+      }),
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      console.error('Imagen API error:', err);
+      return null;
+    }
+
+    const data = await res.json();
+    const base64 = data.predictions[0].bytesBase64Encoded;
+    const buffer = Buffer.from(base64, 'base64');
+
+    if (!existsSync(OG_DIR)) {
+      execSync(`mkdir -p ${OG_DIR}`);
+    }
+
+    const imagePath = join(OG_DIR, `${slug}.png`);
+    writeFileSync(imagePath, buffer);
+    console.log(`OG image saved: og/${slug}.png`);
+    return `/og/${slug}.png`;
+  } catch (e: any) {
+    console.error('Image gen failed:', e.message);
+    return null;
+  }
+}
 
 async function main() {
   const startTime = Date.now();
@@ -86,8 +136,12 @@ Do NOT include frontmatter — just the content starting from the first paragrap
     ? takeawayMatch[1].split('\n').filter(l => l.startsWith('- ')).map(l => l.replace(/^- /, '').trim())
     : [];
 
-  // 7. Build frontmatter
+  // 7. Generate OG image
   const slug = slugify(topicJson.title);
+  console.log('Generating OG image...');
+  const imagePath = await generateOgImage(topicJson.title, category.label, `${dateStr}-${slug}`);
+
+  // 8. Build frontmatter
   const description = topicJson.angle.slice(0, 160);
   const tags = topicJson.keywords.map((k: string) => k.toLowerCase().replace(/\s+/g, '-'));
 
@@ -95,7 +149,7 @@ Do NOT include frontmatter — just the content starting from the first paragrap
 title: "${topicJson.title.replace(/"/g, '\\"')}"
 category: "${category.id}"
 date: ${dateStr}
-description: "${description.replace(/"/g, '\\"')}"
+description: "${description.replace(/"/g, '\\"')}"${imagePath ? `\nimage: "${imagePath}"` : ''}
 takeaways:
 ${takeaways.map(t => `  - "${t.replace(/"/g, '\\"')}"`).join('\n')}
 tags: [${tags.map((t: string) => `"${t}"`).join(', ')}]

@@ -19,6 +19,7 @@ const posts = defineCollection({
     description: z.string(),
     takeaways: z.array(z.string()),
     tags: z.array(z.string()),
+    image: z.string().optional(),
     draft: z.boolean().default(false),
   }),
 });

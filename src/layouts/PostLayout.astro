@@ -10,11 +10,12 @@ interface Props {
   category: string;
   date: Date;
   description: string;
+  image?: string;
   takeaways?: string[];
   tags?: string[];
 }
 
-const { title, category, date, description, takeaways, tags } = Astro.props;
+const { title, category, date, description, image, takeaways, tags } = Astro.props;
 const formattedDate = new Date(date).toLocaleDateString('ms-MY', {
   year: 'numeric',
   month: 'long',
@@ -22,7 +23,7 @@ const formattedDate = new Date(date).toLocaleDateString('ms-MY', {
 });
 ---
 
-<BaseLayout title={`${title} — SYRIMO`} description={description}>
+<BaseLayout title={`${title} — SYRIMO`} description={description} ogImage={image}>
   <Header />
 
   <main class="max-w-2xl mx-auto px-6 pt-28 pb-16">
@@ -38,6 +39,13 @@ const formattedDate = new Date(date).toLocaleDateString('ms-MY', {
         <span>Syah</span>
       </div>
     </div>
+
+    <!-- Hero image -->
+    {image && (
+      <div class="mb-10 -mx-6 sm:mx-0">
+        <img src={image} alt={title} class="w-full rounded-none sm:rounded-xl" loading="eager" />
+      </div>
+    )}
 
     <!-- Post content -->
     <article class="prose prose-invert max-w-none
