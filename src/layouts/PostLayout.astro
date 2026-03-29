@@ -16,7 +16,7 @@ interface Props {
 }
 
 const { title, category, date, description, image, takeaways, tags } = Astro.props;
-const formattedDate = new Date(date).toLocaleDateString('ms-MY', {
+const formattedDate = new Date(date).toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
@@ -79,7 +79,7 @@ const formattedDate = new Date(date).toLocaleDateString('ms-MY', {
         href="/"
         class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors"
       >
-        &larr; Kembali ke halaman utama
+        &larr; Back to all posts
       </a>
     </div>
   </main>
