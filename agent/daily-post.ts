@@ -75,7 +75,7 @@ Respond with ONLY the image prompt, nothing else.`
       body: JSON.stringify({
         contents: [{
           parts: [
-            { text: `Generate a cinematic blog hero image based on this scene description. Use the provided photo as reference for the person who should appear in the scene. Keep their face and appearance consistent with the reference.\n\nScene: ${scenePrompt}` },
+            { text: `Edit this photo into a cinematic scene. Place the person from this photo into the following setting while keeping their appearance exactly the same.\n\nScene: ${scenePrompt}\n\nIMPORTANT: Keep the person's face, glasses, hair, and clothing exactly as shown in the photo. Change only the background and lighting to match the scene description. Widescreen 16:9 format. No text or words in the image.` },
             { inline_data: { mime_type: 'image/png', data: refImageBase64 } },
           ],
         }],
