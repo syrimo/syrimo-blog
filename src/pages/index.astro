@@ -12,13 +12,13 @@ const posts = (await getCollection('posts'))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<BaseLayout title="Syrimo — I build things and write about why.">
+<BaseLayout title="Syrimo — I build things and write about why." description="I build things and write about why. Exploring AI, science, history, business, and faith.">
   <Header />
 
   <main class="max-w-4xl mx-auto px-6">
     <!-- Hero -->
     <section class="py-16 text-center">
-      <h1 class="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">I build things and<br/>write about why.</h1>
+      <h1 class="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">I build things and write about why.</h1>
       <p class="mt-6 max-w-2xl mx-auto text-[var(--color-text-secondary)] leading-relaxed">
         Exploring AI, science, history, business, and faith — through the lens of someone who builds and thinks deeply.
       </p>

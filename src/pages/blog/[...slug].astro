@@ -12,6 +12,11 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+// Calculate reading time from raw markdown body
+const words = post.body ? post.body.split(/\s+/).length : 0;
+const minutes = Math.max(1, Math.ceil(words / 200));
+const readingTime = `${minutes} min read`;
 ---
 
 <PostLayout
@@ -22,6 +27,7 @@ const { Content } = await render(post);
   image={post.data.image}
   takeaways={post.data.takeaways}
   tags={post.data.tags}
+  readingTime={readingTime}
 >
   <Content />
 </PostLayout>
