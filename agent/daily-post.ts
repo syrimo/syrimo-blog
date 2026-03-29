@@ -74,7 +74,7 @@ Respond with ONLY the image prompt, nothing else.`
       },
       body: JSON.stringify({
         model: 'seedream-4-0-250828',
-        prompt: `Reference image: use strictly for facial structure, likeness, glasses, and hair. Place the subject into a cinematic scene. ${scenePrompt} Photorealistic, cinematic lighting, 16:9 widescreen. No text, no words, no letters in the image.`,
+        prompt: `${scenePrompt} Photorealistic, cinematic lighting, 16:9 widescreen.`,
         image_urls: [`data:image/png;base64,${refImageBase64}`],
         size: '2048x1024',
         response_format: 'b64_json',
