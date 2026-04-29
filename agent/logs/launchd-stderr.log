@@ -34,3 +34,12 @@ hint: its remote counterpart. If you want to integrate the remote changes,
 hint: use 'git pull' before pushing again.
 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 
+Git push failed: Command failed: cd /Users/syrimo/Documents/syrimo-blog && git add -A && git commit -m "Daily post: The Gresham's Law of Business: Why Excellence Gets Driven Underground in the Age of AI" && git push origin main
+To https://github.com/syrimo/syrimo-blog.git
+ ! [rejected]        main -> main (non-fast-forward)
+error: failed to push some refs to 'https://github.com/syrimo/syrimo-blog.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. If you want to integrate the remote changes,
+hint: use 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
