@@ -22,6 +22,8 @@ A daily-posting blog at **https://syrimo.com**, published as a static Astro site
 
 **Deploy**: `git push origin main` → Vercel CI/CD → syrimo.com. No manual step required.
 
+**🛑 Cron paused (2026-05-05)** — `com.orca.syrimo-daily-post.plist` set `Disabled=true`. Reason: legacy `daily-post.ts` would fire 7-cat rotation tomorrow which violates the post-2026-05-05 covenant (AI/tech only). Cron stays paused until Phase 3 ships the rewritten pipeline. Per `user_public_blog_authority.md` — silent days are valid. To re-enable after Phase 3: edit plist `Disabled` → `<false/>` and `launchctl load -w ~/Library/LaunchAgents/com.orca.syrimo-daily-post.plist`.
+
 ---
 
 ## 2. Editorial covenant (locked 2026-05-05)
