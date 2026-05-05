@@ -21,6 +21,10 @@ const posts = defineCollection({
     tags: z.array(z.string()),
     image: z.string().optional(),
     draft: z.boolean().default(false),
+    era: z
+      .enum(['founder', 'curator', 'journey', 'archive'])
+      .default('founder'),
+    post_track: z.enum(['daily-curator', 'weekly-orca']).optional(),
   }),
 });
 
