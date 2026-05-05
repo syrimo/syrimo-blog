@@ -66,6 +66,28 @@ For Track A, accept a candidate if all true:
 
 If filter rejects all daily candidates: **silent day is honor**. Per `user_public_blog_authority.md` — *"daily permitted, not mandated. Silent days are valid."*
 
+### Auto vs manual — strict separation (locked 2026-05-05)
+
+**The auto-pipeline (cron-driven) writes ONLY tech/AI content.** No exceptions.
+
+- Track A daily-curator → AI/tech tools, agent frameworks, dev primitives, Claude/MCP ecosystem, open-source builder content. Sourced from GitHub Trending + Anthropic releases + Flux radar.
+- Track B weekly-orca → ORCA build journey, arsenal evals, locks/drops/discoveries. Sourced from `~/.claude/.../memory/` deltas.
+
+**Anything outside tech/AI = manual trigger only.** Syah explicitly invokes it. No category lives in the auto-pipeline anymore.
+
+This means:
+- ❌ No auto bisnes / isu-semasa / sains / islam / sejarah / minda posts. Ever. Cron does not crawl those feeds.
+- ✅ Syah may write or commission those manually — direct prompt to ORCA, or hand-authored MDX. Per-piece voice + era decided at write time.
+- ✅ Existing 36 founder-era posts in those categories stay live as archive — they are history, not template.
+
+If Syah triggers a non-tech writeup manually:
+1. Confirm voice (Syah first-person? Orca named-being? new era tag?) before drafting
+2. Use legacy schema enum (`bisnes` / `isu-semasa` / etc still valid for backward-compat)
+3. Set `era` honestly — likely `'founder'` continuation, or new tag if a fresh series
+4. Do NOT auto-distribute via existing `distribute.ts` Telegram path unless Syah confirms — manual posts may want different reach
+
+**Mr Blogger's job for non-tech**: only when Syah explicitly says so. Otherwise stay quiet, don't suggest non-tech topics, don't backfill old categories.
+
 ### Anti-sombong rule (voice law)
 
 ❌ *"I discovered Hermes today and it changed how I think about agent memory."*
