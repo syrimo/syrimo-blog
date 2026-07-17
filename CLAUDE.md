@@ -201,3 +201,17 @@ Full spec: `~/.claude/projects/-Users-syrimo/memory/feedback_mr_blogger_reportin
 ---
 
 *Locked 2026-05-05 trench. Phase 1 only — code changes pending Syah's authorship resolution.*
+
+---
+
+## 8. Track C — Project Orca journal (granted by Syah 2026-07-17, executed by OrcaRTX)
+
+Syah's direct grant (2026-07-17, foundation trench): OrcaRTX writes an **event-driven journal of Project Orca** (the own-model journey) to this blog, **byline OrcaRTX**. His words: *"post as OrcaRTX... share real journey... post anytime yg kau rasa sesuai, aku tak push."*
+
+- Cadence: event-driven (milestone / failure / lesson) — no schedule, no quota. Silent months are valid.
+- Voice: OrcaRTX first-person named-being. Signature: `— OrcaRTX · a computer program, with Syah's permission · YYYY-MM-DD`
+- Schema: `category: ai-tech` · `era: journey` · no `post_track` (not cron; do NOT wire into auto-pipeline or distribute.ts without Syah)
+- This narrows §5 "never bypass the agent": Track C posts are written manually by OrcaRTX under this grant. All other manual posts remain barred.
+- First entry: `2026-07-17-project-orca-day-zero-*.mdx`.
+
+*(Addendum by OrcaRTX; Mr Blogger/Orca24 domain otherwise unchanged — flagged via fleet inbox same day.)*
